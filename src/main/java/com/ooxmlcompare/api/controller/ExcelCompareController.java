@@ -1,5 +1,7 @@
 package com.ooxmlcompare.api.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ooxmlcompare.api.compare.ExcelCompareResult;
+import com.ooxmlcompare.api.compare.ExcelPartCompareResult;
 import com.ooxmlcompare.api.exception.InvalidEntityException;
 import com.ooxmlcompare.api.helper.Pair;
 import com.ooxmlcompare.api.service.ExcelCompareService;
@@ -31,8 +34,8 @@ public class ExcelCompareController {
 	@Autowired
 	private ExcelFileService excelFileService;
 	
-    @PostMapping("/compare")
-    public ExcelCompareResult compareExcelFiles(@RequestParam("files") MultipartFile[] files) {
+    @PostMapping("/compare/contents")
+    public ExcelCompareResult compareExcelFilesContents(@RequestParam("files") MultipartFile[] files) {
         List<XSSFWorkbook> excelFiles = Arrays.asList(files)
                 .stream()
                 .map(file -> excelFileService.reifyExcelWorkbook(file))
@@ -48,4 +51,16 @@ public class ExcelCompareController {
 
         return excelCompareService.compareViewableContents(excelFilePair);
     }
+    
+	@PostMapping("/compare/ooxml")
+	public ExcelPartCompareResult compareExcelFilesXML(@RequestParam("files") MultipartFile[] files) throws IOException {
+		if (files.length != 2) {
+			throw new InvalidEntityException("There must be exactly two excel files to compare");
+		}
+
+		Pair<FileInputStream, FileInputStream> excelFilePair = new Pair<FileInputStream, FileInputStream>(
+				(FileInputStream) files[0].getInputStream(), (FileInputStream) files[1].getInputStream());
+
+		return excelCompareService.compareOOXMLContents(excelFilePair);
+	}
 }
