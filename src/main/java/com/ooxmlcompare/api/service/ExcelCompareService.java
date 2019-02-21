@@ -13,6 +13,7 @@ import com.ooxmlcompare.api.compare.ExcelPartCompareResult;
 import com.ooxmlcompare.api.compare.NaiveWorkbookCompare;
 import com.ooxmlcompare.api.helper.OOXMLCompare;
 import com.ooxmlcompare.api.helper.Pair;
+import com.ooxmlcompare.api.helper.PartCompare;
 
 @Service
 public class ExcelCompareService {
@@ -26,7 +27,7 @@ public class ExcelCompareService {
 	}
 
 	public ExcelPartCompareResult compareParts(Pair<FileInputStream, FileInputStream> excelFilePair) throws IOException {
-		OOXMLCompare compare = OOXMLCompare.compareContentExceptCoreOf(excelFilePair.first, excelFilePair.second);
+		PartCompare compare = PartCompare.compareContentExceptCoreOf(excelFilePair.first, excelFilePair.second);
 		return new ExcelPartCompareResult(compare.getMessages());
 	}
 	
