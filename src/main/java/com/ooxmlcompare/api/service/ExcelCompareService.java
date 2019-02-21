@@ -15,9 +15,8 @@ public class ExcelCompareService {
 	@Autowired
 	private NaiveWorkbookCompare naiveWorkbookCompare;
 	
-	public ExcelCompareResult compareFiles(Pair<XSSFWorkbook, XSSFWorkbook> excelFilePair) {
+	public ExcelCompareResult compareViewableContents(Pair<XSSFWorkbook, XSSFWorkbook> excelFilePair) {
 		ExcelCompareContext context = new ExcelCompareContext(naiveWorkbookCompare);
 		return context.executeStrategy(excelFilePair.first, excelFilePair.second);
 	}
-
 }

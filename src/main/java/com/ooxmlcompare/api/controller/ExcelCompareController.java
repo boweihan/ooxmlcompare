@@ -46,6 +46,6 @@ public class ExcelCompareController {
         
         Pair<XSSFWorkbook, XSSFWorkbook> excelFilePair = new Pair<XSSFWorkbook, XSSFWorkbook>(excelFiles.get(0), excelFiles.get(1));
 
-        return excelCompareService.compareFiles(excelFilePair);
+        return excelCompareService.compareViewableContents(excelFilePair);
     }
 }
