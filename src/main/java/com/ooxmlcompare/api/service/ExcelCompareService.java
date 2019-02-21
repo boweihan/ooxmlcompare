@@ -25,6 +25,11 @@ public class ExcelCompareService {
 		return context.executeStrategy(excelFilePair.first, excelFilePair.second);
 	}
 
+	public ExcelPartCompareResult compareParts(Pair<FileInputStream, FileInputStream> excelFilePair) throws IOException {
+		OOXMLCompare compare = OOXMLCompare.compareContentExceptCoreOf(excelFilePair.first, excelFilePair.second);
+		return new ExcelPartCompareResult(compare.getMessages());
+	}
+	
 	public ExcelPartCompareResult compareOOXMLContents(Pair<FileInputStream, FileInputStream> excelFilePair) throws IOException {
 		OOXMLCompare compare = OOXMLCompare.compareContentExceptCoreOf(excelFilePair.first, excelFilePair.second);
 		return new ExcelPartCompareResult(compare.getMessages());

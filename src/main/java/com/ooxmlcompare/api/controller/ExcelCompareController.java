@@ -52,8 +52,20 @@ public class ExcelCompareController {
         return excelCompareService.compareViewableContents(excelFilePair);
     }
     
+	@PostMapping("/compare/parts")
+	public ExcelPartCompareResult compareExcelFilesParts(@RequestParam("files") MultipartFile[] files) throws IOException {
+		if (files.length != 2) {
+			throw new InvalidEntityException("There must be exactly two excel files to compare");
+		}
+
+		Pair<FileInputStream, FileInputStream> excelFilePair = new Pair<FileInputStream, FileInputStream>(
+				(FileInputStream) files[0].getInputStream(), (FileInputStream) files[1].getInputStream());
+
+		return excelCompareService.compareParts(excelFilePair);
+	}
+	
 	@PostMapping("/compare/ooxml")
-	public ExcelPartCompareResult compareExcelFilesXML(@RequestParam("files") MultipartFile[] files) throws IOException {
+	public ExcelPartCompareResult compareExcelFilesOOXML(@RequestParam("files") MultipartFile[] files) throws IOException {
 		if (files.length != 2) {
 			throw new InvalidEntityException("There must be exactly two excel files to compare");
 		}
